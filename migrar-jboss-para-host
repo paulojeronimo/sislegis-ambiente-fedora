@@ -1,0 +1,26 @@
+#!/bin/bash
+
+d=../sislegis-ambiente-comum/wildfly-8.2.0.Final
+rm -rf $d || {
+    echo "Não consegui remover o diretório \"$d\""
+    echo "Remova manualmente esse diretório e reinicie este script!"
+    exit
+}
+
+vagrant ssh -c bash <<'EOF'
+source ~/.ambiente
+jboss_stop
+sudo systemctl disable jboss
+cd ferramentas/
+mv wildfly-8.2.0.Final/ /sislegis-ambiente-comum/
+unlink jboss
+ln -s /sislegis-ambiente-comum/wildfly-8.2.0.Final jboss
+exit
+EOF
+
+dir=`cd ../sislegis-ambiente-comum/projetos/app_frontend; pwd`
+sed -i '' "s,/home/vagrant/projetos/app_frontend,$dir,g" ../sislegis-ambiente-comum/wildfly-8.2.0.Final/standalone/configuration/standalone.xml
+sed -i '' -e 's,\(config.*8080\),#\1,g' -e 's,\(config.*9990\),#\1,g' -e 's,\(memory = \)\(.*\),\11024,g' Vagrantfile
+vagrant reload
+cd ../sislegis-ambiente-comum
+rm -rf wildfly-8.2.0.Final/standalone/{log,tmp}
