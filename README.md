@@ -109,7 +109,7 @@ A execução do SISLEGIS dentro de uma VM provisionada pelo Vagrant e executada 
 
 Ao final da execução do script ``mover-wildfly-para-host`` o Wildfly estará disponível dentro do diretório ``sislegis-ambiente-comum``, localizado no mesmo nível do diretório deste projeto (``sislegis-ambiente-fedora``). Os códigos fonte dos projetos que possibilitam a execução do SISLEGIS também estarão disponíveis nos diretórios ``app`` e ``app_frontend``, abaixo do diretório ``sislegis-ambiente-comum/projetos``. O repositório Maven utilizado para a compilação de ``app`` estará em ``sislegis-ambiente-comum/.m2``. Dessa forma, basta o desenvolvedor fazer os ajustes necessários em suas ferramentas para poder compilar e depurar o código do SISLEGIS.
 
-O script ``mover-wildfly-para-host`` não move o PostgreSQL utilizado como gerenciardor da base de dados do SISLEGIS. Contudo, pelo fato de ser retirada da VM a execução do Wildfly, o script altera o ``Vagrantfile`` desse projeto (e reinicia a VM) para que ela consuma menos memória (apenas a necessária para executar o PostgreSQL).
+O script ``mover-wildfly-para-host`` não move o PostgreSQL utilizado como gerenciador da base de dados do SISLEGIS. Contudo, pelo fato de ser retirada da VM a execução do Wildfly, o script altera o ``Vagrantfile`` desse projeto (e reinicia a VM) para que ela consuma menos memória (apenas a necessária para executar o PostgreSQL).
 
 ## Problemas conhecidos (e soluções)
 

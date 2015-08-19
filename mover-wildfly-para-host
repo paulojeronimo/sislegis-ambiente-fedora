@@ -26,7 +26,7 @@ ln -s /$COMUM_DIR/$WILDFLY_VER jboss
 exit
 EOF
 
-dir=`cd ../$COMUM_DIR/projetos/app_frontend; pwd`
+dir=$COMUM_HOME/projetos/app_frontend
 [[ $PLATAFORMA = Cygwin ]] && dir=`cygpath -m $dir`
 sed_i "s,/home/vagrant/projetos/app_frontend,$dir,g" "$WILDFLY_HOME"/standalone/configuration/standalone.xml
 sed_i -e 's,\(config.*8080\),#\1,g' -e 's,\(config.*9990\),#\1,g' -e 's,\(memory = \)\(.*\),\11024,g' "$BASEDIR"/Vagrantfile
