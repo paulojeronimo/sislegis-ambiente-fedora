@@ -1,0 +1,34 @@
+#!/bin/bash
+set +x
+
+source ~/.funcoes/diversas.sh || { echo "Projeto dotfiles não configurado!"; exit; }
+
+BASEDIR=`cd "$(dirname "$0")"; pwd`
+COMUM_DIR=sislegis-ambiente-comum
+COMUM_HOME=`cd "$BASEDIR"/../$COMUM_DIR; pwd`
+WILDFLY_VER=${WILDFLY_VER:-wildfly-8.2.0.Final}
+WILDFLY_HOME=$COMUM_HOME/$WILDFLY_VER
+
+rm -rf "$WILDFLY_HOME" || {
+    echo "Não consegui remover o diretório \"$WILDFLY_HOME\""
+    echo "Remova manualmente esse diretório e reinicie este script!"
+    exit
+}
+
+vagrant ssh -c bash <<EOF
+source \$HOME/.ambiente
+jboss_stop
+sudo systemctl disable jboss
+cd ferramentas/
+mv $WILDFLY_VER/ /$COMUM_DIR/
+unlink jboss
+ln -s /$COMUM_DIR/$WILDFLY_VER jboss
+exit
+EOF
+
+dir=`cd ../$COMUM_DIR/projetos/app_frontend; pwd`
+[[ $PLATAFORMA = Cygwin ]] && dir=`cygpath -m $dir`
+sed_i "s,/home/vagrant/projetos/app_frontend,$dir,g" "$WILDFLY_HOME"/standalone/configuration/standalone.xml
+sed_i -e 's,\(config.*8080\),#\1,g' -e 's,\(config.*9990\),#\1,g' -e 's,\(memory = \)\(.*\),\11024,g' "$BASEDIR"/Vagrantfile
+vagrant reload
+rm -rf "$WILDFLY_HOME"/standalone/{log,tmp}
