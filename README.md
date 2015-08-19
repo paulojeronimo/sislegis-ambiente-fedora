@@ -105,9 +105,19 @@ vagrant ssh -c /vagrant/salvar
 
 ## Problemas conhecidos (e soluções)
 
-### Instalação do plugin vagrant-vbguest no ambiente Windows.
+### Execução no Vagrant no Windows 8.1
 
-No Windows 8.1, a execução do comando que instala o plugin ``vagrant-vbguest`` apresenta o seguinte problema:
+#### Instalação do Vagrant
+
+A forma mais simples e rápida de se instalar o Vagrant (e o VirtualBox - que é uma dependência) é através do [Chocolatey](http://chocolatey.org). Então, após instalá-lo abra um prompt de comando como administrador e execute:
+
+```
+choco install -y virtualbox vagrant
+```
+
+#### Instalação do plugin vagrant-vbguest
+
+Em algumas situações a execução do comando que instala o plugin ``vagrant-vbguest`` pode apresentar o seguinte problema:
 
 ```bash
 $ vagrant plugin install vagrant-vbguest
@@ -119,8 +129,9 @@ C:/HashiCorp/Vagrant/embedded/lib/ruby/2.0.0/rubygems.rb:517:in `inflate': incor
 
 A solução definitiva para esse problema ainda não foi depurada.
 
-A solução de contorno é ignorar essa instalação. Para isso, você deve alterar o script ``instalar``, na linha em que é feito o update dos pacotes, para que a atualização do kernel seja ignorada. Essa alteração, após realizada, deverá deixar a linha que contém esse comando escrita da seguinte forma:
+A solução de contorno é fazer o download e a instalação desse plugin manualmente, através dos seguintes comandos: 
 
 ```bash
-sudo yum -y update --exclude='kernel*'
+wget -c https://rubygems.org/downloads/vagrant-vbguest-0.10.0.gem
+vagrant plugin install vagrant-vbguest-0.10.0.gem
 ```

@@ -8,7 +8,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Desabilita a atualização automática do VirtualBox Guest Additions
   # (feita pelo plugin vbguest - https://github.com/dotless-de/vagrant-vbguest)
-  #config.vbguest.auto_update = false
+  config.vbguest.auto_update = false
 
   # usa a variável de ambiente SISLEGIS_PORT para determinar a porta do sislegis no HOST
   # se ela não estiver definida, utiliza a porta 8080 (default no WildFly)
